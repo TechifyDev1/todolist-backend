@@ -3,12 +3,14 @@ package com.qudus.todoapp.controller;
 // import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.qudus.todoapp.entity.Task;
 import com.qudus.todoapp.entity.User;
@@ -28,7 +30,7 @@ public class TaskController {
 
     @PostMapping
     public Task createTask(@RequestBody Task task, @RequestParam Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found 😢"));
         task.setUser(user);
         return taskRepository.save(task);
     }
