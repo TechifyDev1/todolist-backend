@@ -35,4 +35,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
+
+    public boolean isEmpty() {
+        return tasks == null || tasks.isEmpty();
+    }
 }
