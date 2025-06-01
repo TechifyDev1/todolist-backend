@@ -39,6 +39,21 @@ public class TaskController {
         return taskRepository.save(task);
     }
 
+    @GetMapping
+    public Task getTaskById(@RequestParam Long taskId, @RequestParam Long userId) {
+        if (taskId == null || taskId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
+        }
+        if (userId == null || userId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user Id");
+        }
+        Task task = taskRepository.findTaskByIdAndUserId(taskId, userId);
+        if (task == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found");
+        }
+        return task;
+    }
+    
     /**
      * Retrieves all tasks associated with a specific user.
      *
@@ -48,7 +63,7 @@ public class TaskController {
      * @throws ResponseStatusException if the userId is null, invalid, or the user
      *                                 does not exist
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<Task> getAllTasks(@RequestParam Long userId) {
         System.out.println(userId);
         if (userId == null) {
@@ -85,9 +100,6 @@ public class TaskController {
      */
     @PutMapping
     public Task updateTask(@RequestBody Task task, @RequestParam Long taskId, @RequestParam Long userId) {
-        System.out.println("incoming task id: " + taskId);
-        System.out.println("user id: " + userId);
-        System.out.println("task title: " + task.getTitle());
 
         if (taskId == null || taskId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
@@ -115,5 +127,6 @@ public class TaskController {
         }
         return taskRepository.save(existingTask);
     }
+
 
 }
