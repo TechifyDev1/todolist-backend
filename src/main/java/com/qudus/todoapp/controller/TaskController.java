@@ -110,6 +110,7 @@ public class TaskController {
         return taskRepository.save(existingTask);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping
     public void deleteTask(@RequestParam Long taskId, @RequestParam Long userId) {
         if (taskId == null || taskId <= 0) {
