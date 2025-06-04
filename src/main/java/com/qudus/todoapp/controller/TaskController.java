@@ -22,8 +22,7 @@ import com.qudus.todoapp.entity.User;
 import com.qudus.todoapp.repository.TaskRepository;
 import com.qudus.todoapp.repository.UserRepository;
 
-
-@CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
+@CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -36,7 +35,7 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
+    @CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
     public Task createTask(@RequestBody Task task, @RequestParam Long userId) {
         if (userId == null || userId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user Id");
@@ -52,7 +51,7 @@ public class TaskController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
+    @CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
     public Task getTaskById(@RequestParam Long taskId, @RequestParam Long userId) {
         if (taskId == null || taskId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
@@ -66,9 +65,9 @@ public class TaskController {
         }
         return task;
     }
-    
+
     @GetMapping("/all")
-    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
+    @CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
     public List<Task> getAllTasks(@RequestParam Long userId) {
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is required");
@@ -84,7 +83,7 @@ public class TaskController {
     }
 
     @PutMapping
-    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
+    @CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
     public Task updateTask(@RequestBody Task task, @RequestParam Long taskId, @RequestParam Long userId) {
 
         if (taskId == null || taskId <= 0) {
@@ -115,7 +114,7 @@ public class TaskController {
     }
 
     @DeleteMapping
-    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
+    @CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
     public void deleteTask(@RequestParam Long taskId, @RequestParam Long userId) {
         if (taskId == null || taskId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
@@ -130,5 +129,21 @@ public class TaskController {
         taskRepository.delete(task);
     }
 
+    @PutMapping("/complete")
+    @CrossOrigin(origins = { "http://localhost:3000", "https://todolist-frontend-ruby.vercel.app" })
+    public Task markTaskAsComplete(@RequestParam Long userId, @RequestParam Long taskId, @RequestBody Task task) {
+        if (taskId == null || taskId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
+        }
+        if (userId == null || userId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user Id");
+        }
+        Task existingTask = taskRepository.findTaskByIdAndUserId(taskId, userId);
+        if (existingTask == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found for the given user");
+        }
+        existingTask.setCompleted(task.isCompleted());
+        return taskRepository.save(existingTask);
+    }
 
 }
