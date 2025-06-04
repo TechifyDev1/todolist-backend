@@ -14,7 +14,7 @@ import com.qudus.todoapp.entity.User;
 import com.qudus.todoapp.repository.UserRepository;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
 @RestController
 @RequestMapping("/users")
 public class UserController {

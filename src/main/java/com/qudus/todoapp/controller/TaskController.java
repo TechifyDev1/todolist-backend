@@ -23,7 +23,7 @@ import com.qudus.todoapp.repository.TaskRepository;
 import com.qudus.todoapp.repository.UserRepository;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -110,7 +110,7 @@ public class TaskController {
         return taskRepository.save(existingTask);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     @DeleteMapping
     public void deleteTask(@RequestParam Long taskId, @RequestParam Long userId) {
         if (taskId == null || taskId <= 0) {
