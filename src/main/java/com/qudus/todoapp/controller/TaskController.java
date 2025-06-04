@@ -36,6 +36,7 @@ public class TaskController {
     }
 
     @PostMapping("/create")
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public Task createTask(@RequestBody Task task, @RequestParam Long userId) {
         if (userId == null || userId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user Id");
@@ -51,6 +52,7 @@ public class TaskController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public Task getTaskById(@RequestParam Long taskId, @RequestParam Long userId) {
         if (taskId == null || taskId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
@@ -66,6 +68,7 @@ public class TaskController {
     }
     
     @GetMapping("/all")
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public List<Task> getAllTasks(@RequestParam Long userId) {
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is required");
@@ -81,6 +84,7 @@ public class TaskController {
     }
 
     @PutMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public Task updateTask(@RequestBody Task task, @RequestParam Long taskId, @RequestParam Long userId) {
 
         if (taskId == null || taskId <= 0) {
@@ -110,8 +114,8 @@ public class TaskController {
         return taskRepository.save(existingTask);
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     @DeleteMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public void deleteTask(@RequestParam Long taskId, @RequestParam Long userId) {
         if (taskId == null || taskId <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid task Id");
