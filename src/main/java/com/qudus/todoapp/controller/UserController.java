@@ -15,16 +15,16 @@ import com.qudus.todoapp.repository.UserRepository;
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
 @RequestMapping("/users")
 public class UserController {
     private final UserRepository userRepository;
-
+    
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+    
     @PostMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
@@ -35,6 +35,7 @@ public class UserController {
     // }
 
     @GetMapping
+    @CrossOrigin(origins = {"http://localhost:3000", "https://todolist-frontend-ruby.vercel.app"})
     public User getUserById(@RequestParam Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found 😢"));
         return user;
