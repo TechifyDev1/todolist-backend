@@ -146,4 +146,10 @@ public class TaskController {
         return taskRepository.save(existingTask);
     }
 
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("pong");
+    }
+
+
 }
